@@ -27,4 +27,5 @@ if __name__ == '__main__':
     })
 
     process.crawl(AnimationSpider)
-    process.start()  # the script will block here until the crawling is finished
+    process.start()
+
