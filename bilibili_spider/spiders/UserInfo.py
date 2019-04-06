@@ -2,7 +2,7 @@
 import scrapy
 
 
-class UserinfoSpider(scrapy.Spider):
+class UserInfoSpider(scrapy.Spider):
     name = 'UserInfo'
     allowed_domains = ['test.com']
     start_urls = ['http://test.com/']
