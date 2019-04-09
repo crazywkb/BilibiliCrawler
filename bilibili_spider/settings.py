@@ -87,3 +87,12 @@ ROBOTSTXT_OBEY = True
 # HTTPCACHE_DIR = 'httpcache'
 # HTTPCACHE_IGNORE_HTTP_CODES = []
 # HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+
+ANIMATION_DB_SETTINGS = {
+    'driver_name': 'mysql',
+    'user': 'root',
+    'host': '139.199.98.197',
+    'port': '3306',
+    'pswd': '123456',
+    'database_name': 'bilibili_crawler'
+}
