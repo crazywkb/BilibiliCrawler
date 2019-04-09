@@ -1,10 +1,8 @@
-from sqlalchemy import create_engine
-from sqlalchemy import Column
-from sqlalchemy import Table
-from sqlalchemy import ForeignKey
-from sqlalchemy import Integer, SmallInteger, String, Date, Float, Boolean, Text
-from sqlalchemy.ext.declarative import declarative_base
 from scrapy.utils.project import get_project_settings
+from sqlalchemy import Column
+from sqlalchemy import Integer, String, Float, Boolean, Text
+from sqlalchemy import create_engine
+from sqlalchemy.ext.declarative import declarative_base
 
 TableBase = declarative_base()
 
