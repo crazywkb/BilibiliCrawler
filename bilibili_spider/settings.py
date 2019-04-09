@@ -96,3 +96,12 @@ ANIMATION_DB_SETTINGS = {
     'pswd': '123456',
     'database_name': 'bilibili_crawler'
 }
+
+CONNECTION_STRING = '{0}://{1}:{2}@{3}:{4}/{5}?charset=utf8'.format(
+    ANIMATION_DB_SETTINGS['driver_name'],
+    ANIMATION_DB_SETTINGS['user'],
+    ANIMATION_DB_SETTINGS['pswd'],
+    ANIMATION_DB_SETTINGS['host'],
+    ANIMATION_DB_SETTINGS['port'],
+    ANIMATION_DB_SETTINGS['database_name']
+)
