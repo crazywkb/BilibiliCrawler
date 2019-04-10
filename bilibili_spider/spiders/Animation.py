@@ -11,6 +11,13 @@ class AnimationSpider(scrapy.Spider):
         'page': 1,
         'season_type': 1
     }
+
+    custom_settings = {
+        'ITEM_PIPELINES': {
+            'bilibili_crawler.pipelines.'
+        }
+    }
+
     url = 'https://bangumi.bilibili.com/media/web_api/search/result'
 
     def start_requests(self):

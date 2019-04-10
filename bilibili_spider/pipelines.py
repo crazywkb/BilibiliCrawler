@@ -1,11 +1,26 @@
 # -*- coding: utf-8 -*-
+from sqlalchemy.orm import sessionmaker
 
-# Define your item pipelines here
-#
-# Don't forget to add your pipeline to the ITEM_PIPELINES setting
-# See: https://doc.scrapy.org/en/latest/topics/item-pipeline.html
+from bilibili_spider.models import connect, create_table
 
 
-class BilibiliSpiderPipeline(object):
-    def process_item(self, item, spider):
-        return item
+class AnimationMysqlPipeline(object):
+    def __init__(self):
+        engine = connect()
+        create_table(engine)
+        self.Session = sessionmaker(bind=engine)
+
+    def process_item(self, spider):
+        session = self.Session()
+        pass
+
+        try:
+            session.commit()
+        except:
+            session.rollback()
+            raise
+
+        finally:
+            session.close()
+
+        return None
