@@ -3,6 +3,7 @@ from w3lib.url import add_or_replace_parameters as url_encode
 import json
 import scrapy
 from scrapy.crawler import CrawlerProcess
+from bilibili_spider.items import AnimationItem
 
 
 class AnimationSpider(scrapy.Spider):
@@ -14,7 +15,7 @@ class AnimationSpider(scrapy.Spider):
 
     custom_settings = {
         'ITEM_PIPELINES': {
-            'bilibili_crawler.pipelines.'
+            'bilibili_spider.pipelines.MysqlPipeline': 100
         }
     }
 
@@ -24,8 +25,11 @@ class AnimationSpider(scrapy.Spider):
         yield scrapy.Request(url_encode(self.url, self.spider_params), callback=self.parse)
 
     def parse(self, response):
-        print(response.url)
-        yield json.loads(response.text)
+        data_list = json.loads(response.text)['result']['data']
+        for item in data_list:
+            animation = AnimationItem()
+            animation['link'] = item['link']
+            yield animation
 
 
 if __name__ == '__main__':

@@ -1,20 +1,26 @@
 # -*- coding: utf-8 -*-
+import sys
+sys.path.append('D:\JetBrainProjects\Pycharm\BilibiliCrawler')
+import importlib
 from sqlalchemy.orm import sessionmaker
 
 from bilibili_spider.models import connect, create_table
 
 
-class AnimationMysqlPipeline(object):
+class MysqlPipeline(object):
     def __init__(self):
         engine = connect()
         create_table(engine)
         self.Session = sessionmaker(bind=engine)
 
-    def process_item(self, spider):
+    def process_item(self, item, spider):
         session = self.Session()
-        pass
+        model_class = getattr(importlib.import_module('bilibili_spider.models'), spider.name)  # fuck you
+        model = model_class()
+        model.update(**item)
 
         try:
+            session.add(model)
             session.commit()
         except:
             session.rollback()
@@ -23,4 +29,4 @@ class AnimationMysqlPipeline(object):
         finally:
             session.close()
 
-        return None
+        return item
