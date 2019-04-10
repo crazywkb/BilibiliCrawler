@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
-import sys
-sys.path.append('D:\JetBrainProjects\Pycharm\BilibiliCrawler')
 import importlib
+
 from sqlalchemy.orm import sessionmaker
 
 from bilibili_spider.models import connect, create_table
