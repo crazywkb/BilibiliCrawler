@@ -18,8 +18,9 @@ NEWSPIDER_MODULE = 'bilibili_spider.spiders'
 # USER_AGENT = 'bilibili_spider (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = True
+ROBOTSTXT_OBEY = False
 RETRY_TIMES = 10
+DOWNLOAD_TIMEOUT = 2
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 # CONCURRENT_REQUESTS = 32
 
@@ -52,7 +53,9 @@ RETRY_TIMES = 10
 # Enable or disable downloader middlewares
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
-    'bilibili_spider.middlewares.ProxyMiddleware': 110,
+    'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
+    'bilibili_spider.middlewares.ProxyMiddleware': 150,
+    'scrapy_fake_useragent.middleware.RandomUserAgentMiddleware': 200,
 }
 
 # Enable or disable extensions

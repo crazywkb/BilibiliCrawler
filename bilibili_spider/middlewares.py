@@ -115,9 +115,18 @@ class ProxyMiddleware(object):
         crawler.signals.connect(s.spider_opened, signal=signals.spider_opened)
         return s
 
+    def __get_proxy_list(self, proxy_num):
+        raw_list = requests.get("http://139.199.98.197:3289/get/" + str(proxy_num)).json()
+        proxy_list = []
+        for item in raw_list:
+            proxy = item.get('https', None)
+            if not proxy:
+                proxy = item['http']
+            proxy_list.append(proxy)
+        self.proxy_list = proxy_list
+
     def spider_opened(self, spider):
-        proxy_num = spider.proxy_num
-        self.proxy_list = [proxy['http'] for proxy in requests.get("http://139.199.98.197:3289/get/" + str(proxy_num)).json()]
+        self.__get_proxy_list(spider.proxy_num)
 
         spider.logger.info(f"Load {len(self.proxy_list)} proxy in spider")
 
@@ -125,17 +134,36 @@ class ProxyMiddleware(object):
         request.meta['proxy'] = random.choice(self.proxy_list)
 
     def process_response(self, request, response, spider):
-        self.retry_count = 0
+        if response.status == 200:
+            self.retry_count = 0
+
+        else:
+            proxy = request.meta['proxy']
+            request.meta['proxy'] = random.choice(self.proxy_list)
+            self.retry_count += 1
+            self.proxy_list.remove(proxy)
+
+            if not len(self.proxy_list):
+                self.__get_proxy_list(spider.proxy_num)
+
+        print("+" * 100)
+        print(request.meta)
         return response
 
     def process_exception(self, request, exception, spider):
         if self.retry_count >= spider.proxy_num:
-            self.proxy_list = [proxy['http'] for proxy in requests.get("http://139.199.98.197:3289/get/" + str(spider.proxy_num)).json()]
+            self.__get_proxy_list(spider.proxy_num)
+
             spider.logger.warn(f"Proxy may be exhausted, reload {len(self.proxy_list)} proxy.")
             self.retry_count = 0
 
         else:
+            proxy = request.meta['proxy']
             self.retry_count += 1
+            self.proxy_list.remove(proxy)
+
+            if not len(self.proxy_list):
+                self.__get_proxy_list(spider.proxy_num)
 
         request.meta['proxy'] = random.choice(self.proxy_list)
         return request
