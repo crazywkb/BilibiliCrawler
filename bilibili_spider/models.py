@@ -1,6 +1,7 @@
 from scrapy.utils.project import get_project_settings as __get_project_settings
 from sqlalchemy import Column
 from sqlalchemy import Integer, String, Float, Boolean, Text
+from sqlalchemy import ForeignKey
 from sqlalchemy import create_engine as __create_engine
 from sqlalchemy.ext.declarative import declarative_base as __declarative_base
 
@@ -30,6 +31,23 @@ class Animation(TableBase):
     score = Column(Float)
     season_id = Column(Integer)
     title = Column(Text())
+    tag_list = Column(Text())
+    character_voice_list = Column(Text())
+    character_staff_list = Column(Text())
+
+    def update(self, **kwargs):
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+
+
+class AnimationFeature(TableBase):
+    __tablename__ = "animation_feature"
+
+    id = Column(Integer, primary_key=True)
+    media_id = Column(Integer, ForeignKey('Animation.media_id'))
+    tag_list = Column(Text())
+    character_voice_list = Column(Text())
+    character_staff_list = Column(Text())
 
     def update(self, **kwargs):
         for key, value in kwargs.items():

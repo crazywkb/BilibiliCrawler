@@ -22,7 +22,7 @@ class AnimationSpider(scrapy.Spider):
         }
     }
 
-    proxy_num = 300
+    proxy_num = 20
 
     def start_requests(self):
         yield scrapy.Request(url_encode(self.url, self.spider_params), callback=self.parse, dont_filter=True)

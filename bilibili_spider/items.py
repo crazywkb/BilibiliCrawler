@@ -14,3 +14,10 @@ class AnimationItem(Item):
     score = Field()
     season_id = Field()
     title = Field()
+
+
+class AnimationFeatureItem(Item):
+    media_id = Field()
+    tag_list = Field()
+    character_voice_list = Field()
+    character_staff_list = Field()
