@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
-from w3lib.url import add_or_replace_parameters as url_encode
 import json
+
 import scrapy
-from scrapy.crawler import CrawlerProcess
+from w3lib.url import add_or_replace_parameters as url_encode
+
 from bilibili_spider.items import AnimationItem
 
 
@@ -11,7 +12,7 @@ class AnimationSpider(scrapy.Spider):
 
     url = 'http://bangumi.bilibili.com/media/web_api/search/result'
     spider_params = {
-        'page': 14,
+        'page': 1,
         'season_type': 1
     }
 
@@ -21,17 +22,18 @@ class AnimationSpider(scrapy.Spider):
         }
     }
 
-    proxy_num = 50
+    proxy_num = 300
 
     def start_requests(self):
-        yield scrapy.Request(url_encode(self.url, self.spider_params), callback=self.parse)
+        yield scrapy.Request(url_encode(self.url, self.spider_params), callback=self.parse, dont_filter=True)
 
     def parse(self, response):
         try:
             data_list = json.loads(response.text).get('result', dict()).get('data', list())
 
-        except:
-            yield scrapy.Request(url=url_encode(self.url, self.spider_params), callback=self.parse)
+        except json.JSONDecodeError:
+            self.logger.error("Error occur while decoding response in Animation.")
+            yield scrapy.Request(url=url_encode(self.url, self.spider_params), callback=self.parse, dont_filter=True)
 
         else:
             for item in data_list:
@@ -53,4 +55,4 @@ class AnimationSpider(scrapy.Spider):
 
             if len(data_list):
                 self.spider_params['page'] += 1
-                yield scrapy.Request(url=url_encode(self.url, self.spider_params), callback=self.parse)
+                yield scrapy.Request(url=url_encode(self.url, self.spider_params), callback=self.parse, dont_filter=True)

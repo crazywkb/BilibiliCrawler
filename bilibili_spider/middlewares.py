@@ -5,9 +5,12 @@
 # See documentation in:
 # https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
-from scrapy import signals
-import requests
 import random
+
+import requests
+from scrapy import signals
+from scrapy.utils.project import get_project_settings
+from twisted.internet.error import TimeoutError
 
 
 class BilibiliSpiderSpiderMiddleware(object):
@@ -107,7 +110,9 @@ class BilibiliSpiderDownloaderMiddleware(object):
 
 class ProxyMiddleware(object):
     proxy_list = None
-    retry_count = 0
+    get_proxy_url = None
+    proxy_num = None
+    useful_proxy_sum = None
 
     @classmethod
     def from_crawler(cls, crawler):
@@ -116,7 +121,7 @@ class ProxyMiddleware(object):
         return s
 
     def __get_proxy_list(self, proxy_num):
-        raw_list = requests.get("http://139.199.98.197:3289/get/" + str(proxy_num)).json()
+        raw_list = requests.get(self.get_proxy_url % proxy_num).json()
         proxy_list = []
         for item in raw_list:
             proxy = item.get('https', None)
@@ -124,46 +129,31 @@ class ProxyMiddleware(object):
                 proxy = item['http']
             proxy_list.append(proxy)
         self.proxy_list = proxy_list
+        self.proxy_num = self.useful_proxy_sum = len(self.proxy_list)
 
     def spider_opened(self, spider):
+        self.get_proxy_url = get_project_settings().get('PROXY_URL')
         self.__get_proxy_list(spider.proxy_num)
-
-        spider.logger.info(f"Load {len(self.proxy_list)} proxy in spider")
 
     def process_request(self, request, spider):
         request.meta['proxy'] = random.choice(self.proxy_list)
 
     def process_response(self, request, response, spider):
-        if response.status == 200:
-            self.retry_count = 0
-
-        else:
-            proxy = request.meta['proxy']
+        if response.status != 200:
             request.meta['proxy'] = random.choice(self.proxy_list)
-            self.retry_count += 1
-            self.proxy_list.remove(proxy)
+            return request
 
-            if not len(self.proxy_list):
-                self.__get_proxy_list(spider.proxy_num)
-
-        print("+" * 100)
-        print(request.meta)
         return response
 
     def process_exception(self, request, exception, spider):
-        if self.retry_count >= spider.proxy_num:
-            self.__get_proxy_list(spider.proxy_num)
+        if isinstance(exception, TimeoutError):
+            self.proxy_list.remove(request.meta['proxy'])
+            self.useful_proxy_sum -= 1
+            spider.logger.warn(f"Timeout while using proxy. {self.useful_proxy_sum}/{self.proxy_num}")
 
-            spider.logger.warn(f"Proxy may be exhausted, reload {len(self.proxy_list)} proxy.")
-            self.retry_count = 0
-
-        else:
-            proxy = request.meta['proxy']
-            self.retry_count += 1
-            self.proxy_list.remove(proxy)
-
-            if not len(self.proxy_list):
+            if not self.useful_proxy_sum:
                 self.__get_proxy_list(spider.proxy_num)
+                spider.logger.warn(f"Proxy pool exhausted. Get {self.useful_proxy_sum} proxy again.")
 
         request.meta['proxy'] = random.choice(self.proxy_list)
         return request
