@@ -2,6 +2,7 @@ from scrapy.utils.project import get_project_settings as __get_project_settings
 from sqlalchemy import Column
 from sqlalchemy import Integer, String, Float, Boolean, Text
 from sqlalchemy import ForeignKey
+from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine as __create_engine
 from sqlalchemy.ext.declarative import declarative_base as __declarative_base
 
@@ -22,7 +23,7 @@ class Animation(TableBase):
     id = Column(Integer, primary_key=True)
     link = Column(String(100))
     is_finish = Column(Boolean)
-    media_id = Column(Integer)
+    media_id = Column(Integer, index=True)
     follow = Column(String(20))
     play = Column(String(20))
     pub_date = Column(Integer)
@@ -44,7 +45,7 @@ class AnimationFeature(TableBase):
     __tablename__ = "animation_feature"
 
     id = Column(Integer, primary_key=True)
-    media_id = Column(Integer, ForeignKey('Animation.media_id'))
+    media_id = Column(Integer, ForeignKey(Animation.media_id))
     tag_list = Column(Text())
     character_voice_list = Column(Text())
     character_staff_list = Column(Text())
