@@ -147,7 +147,11 @@ class ProxyMiddleware(object):
 
     def process_exception(self, request, exception, spider):
         if isinstance(exception, TimeoutError):
-            self.proxy_list.remove(request.meta['proxy'])
+            try:
+                self.proxy_list.remove(request.meta['proxy'])
+            except ValueError:
+                pass
+
             self.useful_proxy_sum -= 1
             spider.logger.warn(f"Timeout while using proxy. {self.useful_proxy_sum}/{self.proxy_num}")
 

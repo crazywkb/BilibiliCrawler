@@ -19,9 +19,10 @@ NEWSPIDER_MODULE = 'bilibili_spider.spiders'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = False
-DOWNLOAD_TIMEOUT = 2
+DOWNLOAD_TIMEOUT = 15
 REDIRECT_ENABLED = False
 PROXY_URL = 'http://139.199.98.197:3289/get/%s'
+CONCURRENT_REQUESTS = 5
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 # CONCURRENT_REQUESTS = 32
 
@@ -98,7 +99,7 @@ ANIMATION_DB_SETTINGS = {
     'user': 'root',
     'host': '139.199.98.197',
     'port': '3306',
-    'pswd': '123456',
+    'pswd': 'hacker_died',
     'database_name': 'bilibili_crawler'
 }
 

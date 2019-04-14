@@ -32,9 +32,6 @@ class Animation(TableBase):
     score = Column(Float)
     season_id = Column(Integer)
     title = Column(Text())
-    tag_list = Column(Text())
-    character_voice_list = Column(Text())
-    character_staff_list = Column(Text())
 
     def update(self, **kwargs):
         for key, value in kwargs.items():
@@ -47,8 +44,11 @@ class AnimationFeature(TableBase):
     id = Column(Integer, primary_key=True)
     media_id = Column(Integer, ForeignKey(Animation.media_id))
     tag_list = Column(Text())
+    review_times = Column(Integer)
     character_voice_list = Column(Text())
     character_staff_list = Column(Text())
+    short_comment_sum = Column(Integer)
+    long_comment_sum = Column(Integer)
 
     def update(self, **kwargs):
         for key, value in kwargs.items():
