@@ -5,15 +5,15 @@ import re
 import scrapy
 
 from bilibili_spider.items import AnimationFeatureItem
-from utils.database_query import get_media_list
+from utils.database_query import get_Animation_media_list
 
 
 class AnimationCommentSpider(scrapy.Spider):
     name = 'AnimationFeature'
 
-    url = 'http://www.bilibili.com/bangumi/media/md%s/'
+    url = 'https://www.bilibili.com/bangumi/media/md%s/'
 
-    proxy_num = 200
+    proxy_num = 400
     long_comment_sum_pattern = r'长评 \( (\d*) \)'
     short_comment_sum_pattern = r'短评 \( (\d*) \)'
     voice_and_staff_pattern = r'(\{.*\});'
@@ -25,7 +25,7 @@ class AnimationCommentSpider(scrapy.Spider):
     }
 
     def start_requests(self):
-        media_list = get_media_list()
+        media_list = get_Animation_media_list()
 
         for media_id in media_list:
             request = scrapy.Request(url=self.url % media_id, callback=self.parse, dont_filter=True)

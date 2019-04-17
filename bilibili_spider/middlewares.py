@@ -140,6 +140,18 @@ class ProxyMiddleware(object):
 
     def process_response(self, request, response, spider):
         if response.status != 200:
+            try:
+                self.proxy_list.remove(request.meta['proxy'])
+                self.useful_proxy_sum -= 1
+
+            except ValueError:
+                pass
+
+            spider.logger.warn(f"Access error while using proxy. status {response.status}. {self.useful_proxy_sum}/{self.proxy_num} {len(self.proxy_list)}")
+            if not self.useful_proxy_sum:
+                self.__get_proxy_list(spider.proxy_num)
+                spider.logger.warn(f"Proxy pool exhausted. Get {self.useful_proxy_sum} proxy again.")
+
             request.meta['proxy'] = random.choice(self.proxy_list)
             return request
 
@@ -149,11 +161,11 @@ class ProxyMiddleware(object):
         if isinstance(exception, TimeoutError):
             try:
                 self.proxy_list.remove(request.meta['proxy'])
+                self.useful_proxy_sum -= 1
             except ValueError:
                 pass
 
-            self.useful_proxy_sum -= 1
-            spider.logger.warn(f"Timeout while using proxy. {self.useful_proxy_sum}/{self.proxy_num}")
+            spider.logger.warn(f"Timeout while using proxy. {self.useful_proxy_sum}/{self.proxy_num} {len(self.proxy_list)}")
 
             if not self.useful_proxy_sum:
                 self.__get_proxy_list(spider.proxy_num)
