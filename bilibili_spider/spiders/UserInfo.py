@@ -4,8 +4,11 @@ import scrapy
 
 class UserInfoSpider(scrapy.Spider):
     name = 'UserInfo'
-    allowed_domains = ['test.com']
-    start_urls = ['http://test.com/']
 
     def parse(self, response):
         pass
+
+    """
+    1. 考虑专门使用一个爬虫进行用户的寻找，对每个找到的用户进行判断，如果用户等级为3级以下，则跳过，不收录。
+    2. 爬取过程中，对于已经爬取过得用户，需要及时从数据集中移除。
+    """
