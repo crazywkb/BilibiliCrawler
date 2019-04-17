@@ -24,3 +24,37 @@ class AnimationFeatureItem(Item):
     character_staff_list = Field()  # 导演、编剧等 json.loads()
     short_comment_sum = Field()  # 短评总数
     long_comment_sum = Field()  # 长评总数
+
+
+class UserInfoItem(Item):
+    mid = Field()
+    name = Field()
+    sex = Field()
+    sign = Field()
+    rank = Field()  # 讲道理我也不知道是啥
+    level = Field()
+    jointime = Field()
+    moral = Field()
+    silence = Field()
+    birthday = Field()
+    coins = Field()
+    fans_badge = Field()
+    role = Field()
+    title = Field()
+    desc = Field()
+    vip_type = Field()
+    vip_status = Field()
+
+
+class UserUpStatItem(Item):
+    mid = Field()
+    archive_view = Field()
+    article_view = Field()
+
+
+class UserStatItem(Item):
+    mid = Field()
+    following = Field()
+    black = Field()
+    whisper = Field()
+    follower = Field()

@@ -52,3 +52,46 @@ class AnimationFeature(TableBase):
     def update(self, **kwargs):
         for key, value in kwargs.items():
             setattr(self, key, value)
+
+
+class UserInfo(TableBase):
+    __tablename__ = "user_info"
+
+    id = Column(Integer, primary_key=True)
+    mid = Column(Integer, index=True)
+    name = Column(String(50))
+    sex = Column(String(10))
+    sign = Column(Text())
+    rank = Column(Integer)
+    level = Column(Integer)
+    jointime = Column(Integer)
+    moral = Column(Integer)
+    silence = Column(Integer)
+    birthday = Column(String(20))
+    coins = Column(Integer)
+    fans_badge = Column(Boolean)
+    role = Column(Integer)
+    title = Column(Text())
+    desc = Column(Text())
+    vip_type = Column(Integer)
+    vip_status = Column(Integer)
+
+
+class UserUpStat(TableBase):
+    __tablename__ = "user_upstat"
+
+    id = Column(Integer, primary_key=True)
+    mid = Column(Integer, ForeignKey(UserInfo.mid))
+    archive_view = Column(Integer)
+    article_view = Column(Integer)
+
+
+class UserStat(TableBase):
+    __tablename__ = "user_stat"
+
+    id = Column(Integer, primary_key=True)
+    mid = Column(Integer, ForeignKey(UserInfo.mid))
+    following = Column(Integer)
+    whisper = Column(Integer)
+    black = Column(Integer)
+    follower = Column(Integer)
