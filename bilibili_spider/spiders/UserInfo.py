@@ -5,6 +5,17 @@ import scrapy
 class UserInfoSpider(scrapy.Spider):
     name = 'UserInfo'
 
+    fan_url = 'https://api.bilibili.com/x/relation/followers?vmid=%s&pn=%s&ps=50&order=desc'
+    following_url = 'https://api.bilibili.com/x/relation/followings?vmid=%s&pn=%s&ps=50&order=desc'
+    user_info_url = 'https://api.bilibili.com/x/space/acc/info?mid=%s'
+    stat_url = 'https://api.bilibili.com/x/relation/stat?vmid=%s'
+    upstat_url = 'https://api.bilibili.com/x/space/upstat?mid=%s'
+    animation_following_url = 'https://api.bilibili.com/x/space/bangumi/follow/list?type=1&pn=%s&ps=50&vmid=%s'
+
+    def start_requests(self):
+        # 遍历所有fan和follower，然后yield出request去请求info信息，然后yield去请求追番信息。
+        pass
+
     def parse(self, response):
         pass
 
