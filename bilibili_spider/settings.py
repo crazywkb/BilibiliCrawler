@@ -111,3 +111,11 @@ CONNECTION_STRING = '{0}://{1}:{2}@{3}:{4}/{5}?charset=utf8'.format(
     ANIMATION_DB_SETTINGS['port'],
     ANIMATION_DB_SETTINGS['database_name']
 )
+
+
+REDIS_SETTINGS = {
+    'host': '47.94.104.237',
+    'db': 3,
+    'password': 'hacker_died',
+    'decode_responses': True
+}

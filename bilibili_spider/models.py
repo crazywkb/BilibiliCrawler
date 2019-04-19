@@ -76,6 +76,10 @@ class UserInfo(TableBase):
     vip_type = Column(Integer)
     vip_status = Column(Integer)
 
+    def update(self, **kwargs):
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+
 
 class UserUpStat(TableBase):
     __tablename__ = "user_upstat"
@@ -84,6 +88,10 @@ class UserUpStat(TableBase):
     mid = Column(Integer, ForeignKey(UserInfo.mid))
     archive_view = Column(Integer)
     article_view = Column(Integer)
+
+    def update(self, **kwargs):
+        for key, value in kwargs.items():
+            setattr(self, key, value)
 
 
 class UserStat(TableBase):
@@ -95,3 +103,7 @@ class UserStat(TableBase):
     whisper = Column(Integer)
     black = Column(Integer)
     follower = Column(Integer)
+
+    def update(self, **kwargs):
+        for key, value in kwargs.items():
+            setattr(self, key, value)
