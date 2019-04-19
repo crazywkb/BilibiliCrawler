@@ -3,7 +3,7 @@
 Data collector for data mining course's project.
 
 ## Goal
-1. UserInfo Spider
+1. UserInfo Spider [half done]
 2. Animation Spider [done]
 3. Animation Comments Spider [done]
 4. User Animation Follower Spider [delete]
