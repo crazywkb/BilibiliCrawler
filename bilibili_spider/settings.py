@@ -22,7 +22,7 @@ ROBOTSTXT_OBEY = False
 DOWNLOAD_TIMEOUT = 15
 REDIRECT_ENABLED = False
 PROXY_URL = 'http://139.199.98.197:3289/get/%s'
-CONCURRENT_REQUESTS = 3
+CONCURRENT_REQUESTS = 5
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 # CONCURRENT_REQUESTS = 32
 

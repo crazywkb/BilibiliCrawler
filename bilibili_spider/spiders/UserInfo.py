@@ -17,7 +17,7 @@ class UserInfoSpider(scrapy.Spider):
     redis = None
 
     __key_of_redis_users = 'finished_users'
-    proxy_num = 200
+    proxy_num = 150
 
     fan_url = 'https://api.bilibili.com/x/relation/followers?vmid=%s&pn=1&ps=50&order=desc'
     following_url = 'https://api.bilibili.com/x/relation/followings?vmid=%s&pn=1&ps=50&order=desc'
@@ -50,6 +50,9 @@ class UserInfoSpider(scrapy.Spider):
         :param user: a dict contains user info
         :return: boolean
         """
+        if not user:
+            return False
+
         level_qualified = user.get('level', 0) > 2
         if not level_qualified:
             return False
@@ -165,6 +168,7 @@ class UserInfoSpider(scrapy.Spider):
 
         if not animation_following_list:
             self.logger.info(f"Crawled user {vmid} done.")
+
         else:
             self.__add_following_set2user(vmid, animation_following_list)
             pn = int(pn) + 1
