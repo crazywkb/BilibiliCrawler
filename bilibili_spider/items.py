@@ -3,6 +3,7 @@ from scrapy import Item, Field
 
 
 class AnimationItem(Item):
+    __reflect__ = 'Animation'
     link = Field()
     is_finish = Field()
     media_id = Field()
@@ -17,6 +18,7 @@ class AnimationItem(Item):
 
 
 class AnimationFeatureItem(Item):
+    __reflect__ = 'AnimationFeature'
     media_id = Field()
     tag_list = Field()  # 番剧标签
     review_times = Field()  # 评分人数
@@ -27,6 +29,7 @@ class AnimationFeatureItem(Item):
 
 
 class UserInfoItem(Item):
+    __reflect__ = 'UserInfo'
     mid = Field()
     name = Field()
     sex = Field()
@@ -47,12 +50,14 @@ class UserInfoItem(Item):
 
 
 class UserUpStatItem(Item):
+    __reflect__ = 'UserUpStat'
     mid = Field()
     archive_view = Field()
     article_view = Field()
 
 
 class UserStatItem(Item):
+    __reflect__ = 'UserStat'
     mid = Field()
     following = Field()
     black = Field()

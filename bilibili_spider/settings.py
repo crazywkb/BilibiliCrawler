@@ -22,7 +22,7 @@ ROBOTSTXT_OBEY = False
 DOWNLOAD_TIMEOUT = 15
 REDIRECT_ENABLED = False
 PROXY_URL = 'http://139.199.98.197:3289/get/%s'
-CONCURRENT_REQUESTS = 5
+CONCURRENT_REQUESTS = 3
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 # CONCURRENT_REQUESTS = 32
 
@@ -115,7 +115,7 @@ CONNECTION_STRING = '{0}://{1}:{2}@{3}:{4}/{5}?charset=utf8'.format(
 
 REDIS_SETTINGS = {
     'host': '47.94.104.237',
-    'db': 3,
+    'db': 7,
     'password': 'hacker_died',
     'decode_responses': True
 }
