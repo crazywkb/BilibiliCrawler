@@ -22,7 +22,7 @@ ROBOTSTXT_OBEY = False
 DOWNLOAD_TIMEOUT = 15
 REDIRECT_ENABLED = False
 PROXY_URL = 'http://139.199.98.197:3289/get/%s'
-CONCURRENT_REQUESTS = 5
+CONCURRENT_REQUESTS = 10
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 # CONCURRENT_REQUESTS = 32
 
@@ -60,7 +60,7 @@ DOWNLOADER_MIDDLEWARES = {
     'scrapy_fake_useragent.middleware.RandomUserAgentMiddleware': 200,
     'scrapy.downloadermiddlewares.retry.RetryMiddleware': None,
 }
-
+COOKIES_ENABLED = False
 # Enable or disable extensions
 # See https://doc.scrapy.org/en/latest/topics/extensions.html
 # EXTENSIONS = {

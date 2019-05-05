@@ -13,11 +13,11 @@ from bilibili_spider.items import UserUpStatItem
 
 class UserInfoSpider(scrapy.Spider):
     name = 'UserInfo'
-    start_mid = 250858633
+    start_mid = 6411399
     redis = None
 
     __key_of_redis_users = 'finished_users'
-    proxy_num = 150
+    proxy_num = 500
 
     fan_url = 'https://api.bilibili.com/x/relation/followers?vmid=%s&pn=1&ps=50&order=desc'
     following_url = 'https://api.bilibili.com/x/relation/followings?vmid=%s&pn=1&ps=50&order=desc'
@@ -75,6 +75,9 @@ class UserInfoSpider(scrapy.Spider):
 
     def parse_user_info(self, response):
         data = json.loads(response.text).get('data', dict())
+        if not data:
+            return
+
         if not self.__is_qualified(data):
             self.logger.info(f'{data.get("mid", 0)} is not qualified.')
             return
