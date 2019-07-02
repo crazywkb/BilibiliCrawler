@@ -8,7 +8,7 @@ import pylab as pl
 from collections import defaultdict
 
 
-filepath='user_following_animation.json'
+filepath='./test_data/user_following_animation.json'
 data=pd.read_json(filepath,lines=True)
 data_list = list(data["value"].dropna())
 print(len(data_list))
