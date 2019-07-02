@@ -20,7 +20,7 @@ fileConfig(config.config_file_name)
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
 import sys
-sys.path.append("D:\JetBrainProjects\Pycharm\BilibiliCrawler")
+sys.path.append("D:\JetBrainsProject\PycharmProjects\BilibiliAnimationRecommender")
 from bilibili_spider.models import TableBase
 target_metadata = TableBase.metadata
 

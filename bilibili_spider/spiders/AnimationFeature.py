@@ -13,7 +13,7 @@ class AnimationCommentSpider(scrapy.Spider):
 
     url = 'https://www.bilibili.com/bangumi/media/md%s/'
 
-    proxy_num = 400
+    proxy_num = 100
     long_comment_sum_pattern = r'长评 \( (\d*) \)'
     short_comment_sum_pattern = r'短评 \( (\d*) \)'
     voice_and_staff_pattern = r'(\{.*\});'
