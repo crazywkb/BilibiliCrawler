@@ -8,12 +8,12 @@ import pylab as pl
 from collections import defaultdict
 
 
-filepath='D:/Machine learning/user_following_animation.json'
+filepath='user_following_animation.json'
 data=pd.read_json(filepath,lines=True)
 data_list = list(data["value"].dropna())
 print(len(data_list))
 
-frequent_itemsets = fpg.find_frequent_itemsets(data_list, minimum_support=0.05 * len(data_list), include_support=True)
+frequent_itemsets = fpg.find_frequent_itemsets(data_list, minimum_support=0.1 * len(data_list), include_support=True)
 print(type(frequent_itemsets))  # print type
 result = []
 for itemset, support in frequent_itemsets:  # 将generator结果存入list
@@ -65,7 +65,7 @@ def transform(raw_rules):
             result.append((base_set, predict_set, confidence))
 
     return result
-raw_rules = generate_rules(patterns, 0.5)
+raw_rules = generate_rules(patterns, 0.6)
 rules = transform(raw_rules)
 rules.sort(key=lambda x: x[2], reverse=True)
 rules_a = [i[0] for i in rules]
