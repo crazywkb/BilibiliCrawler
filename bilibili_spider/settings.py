@@ -16,7 +16,7 @@ NEWSPIDER_MODULE = 'bilibili_spider.spiders'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 # USER_AGENT = 'bilibili_spider (+http://www.yourdomain.com)'
-LOG_LEVEL = 'INFO'
+LOG_LEVEL = 'DEBUG'
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = False
 DOWNLOAD_TIMEOUT = 15
@@ -96,10 +96,10 @@ COOKIES_ENABLED = False
 
 ANIMATION_DB_SETTINGS = {
     'driver_name': 'mysql',
-    'user': 'root',
-    'host': '139.199.98.197',
+    'user': 'dm_worker',
+    'host': '47.94.104.237',
     'port': '3306',
-    'pswd': 'hacker_died',
+    'pswd': 'dm_worker_password',
     'database_name': 'bilibili_crawler'
 }
 
@@ -114,8 +114,8 @@ CONNECTION_STRING = '{0}://{1}:{2}@{3}:{4}/{5}?charset=utf8'.format(
 
 
 REDIS_SETTINGS = {
-    'host': '47.94.104.237',
+    'host': '139.199.98.197',
     'db': 7,
-    'password': 'hacker_died',
+    'password': 'dm_worker_password',
     'decode_responses': True
 }
