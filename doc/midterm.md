@@ -72,7 +72,21 @@ permalink: /2019/projects/p07/midterm/
 
 ### 数据分析与可视化
 
+* 用户开放信息占比
 
+![](https://ws1.sinaimg.cn/large/005J7jqOly1g4mp808k2zj309e056dfu.jpg)
+
+* 用户等级占比
+
+![](https://ws1.sinaimg.cn/large/005J7jqOly1g4mpjnwx5dj306t05m74c.jpg)
+
+* 用户观看番剧占比
+
+  ![](https://ws1.sinaimg.cn/large/005J7jqOly1g4mpvmkowaj308t069glt.jpg)
+
+* 番剧类型占比
+
+  ![](https://ws1.sinaimg.cn/large/005J7jqOly1g4mqwnets2j30o00803yw.jpg)
 
 ### 模型选取
 
