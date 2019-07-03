@@ -13,7 +13,7 @@ data=pd.read_json(filepath,lines=True)
 data_list = list(data["value"].dropna())
 print(len(data_list))
 
-frequent_itemsets = fpg.find_frequent_itemsets(data_list, minimum_support=0.1 * len(data_list), include_support=True)
+frequent_itemsets = fpg.find_frequent_itemsets(data_list, minimum_support=0.07 * len(data_list), include_support=True)
 print(type(frequent_itemsets))  # print type
 result = []
 for itemset, support in frequent_itemsets:  # 将generator结果存入list
