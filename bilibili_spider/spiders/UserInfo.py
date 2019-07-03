@@ -13,7 +13,7 @@ from bilibili_spider.items import UserUpStatItem
 
 class UserInfoSpider(scrapy.Spider):
     name = 'UserInfo'
-    start_mid = 298753963
+    start_mid = 52491871
     redis = None
 
     __key_of_redis_users = 'finished_users'
