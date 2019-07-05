@@ -116,7 +116,9 @@ def add_score(rules_weight) :
     rules_df['score'] = 0
 
     # 读取animation相关数据
-    animation = pd.read_json("./test_data/bilibili_crawler_animation.csv", lines=True)
-    animation_feature = pd.read_json("./test_data/bilibili_crawler_animation_feature.json", lines=True)
+    animation = pd.read_json("./test_data/bilibili_crawler_animation.json")
+    animation_feature = pd.read_json("./test_data/bilibili_crawler_animation_feature.json")
+    animation_feature[["tag_list","character_voice_list","character_staff_list"]] = animation_feature[["tag_list","character_voice_list","character_staff_list"]].applymap(json.loads)
+    print(animation_feature.head())
 
 add_score(rules_weight)
