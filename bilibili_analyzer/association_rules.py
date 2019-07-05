@@ -103,6 +103,23 @@ def count_repeat(rules_df):
             count +=1
     print(count)
 
+def trans(raw_num):
+    result = 1
+    raw_num = raw_num[:-3]
+    if raw_num.endswith("亿"):
+        result = result * 10 ** 8
+        raw_num = raw_num[:-1]
+    elif raw_num.endswith("万"):
+        result = result * 10 ** 4
+        raw_num = raw_num[:-1]
+    
+    try:
+        result = result * float(raw_num)
+    except:
+        result = 0
+
+    return int(result)
+    
 minimum_support = 0.07
 minimum_confidence = 0.6
 patterns = generate_frequent_items(minimum_support)
