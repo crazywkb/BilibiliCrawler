@@ -69,9 +69,6 @@ def transform(raw_rules):
 
     return result
 
-
-
-
 def transform_rules_to_df(raw_rules) :
     rules = transform(raw_rules)
     rules.sort(key=lambda x: x[2], reverse=True)
@@ -80,9 +77,7 @@ def transform_rules_to_df(raw_rules) :
     confidence = [i[2] for i in rules]
     rules_df = pd.DataFrame({"rules_a": rules_a, "rules_b": rules_b, "confidence": confidence})
     print(rules_df)
-
     return rules_df
-
 
 def unfold_rules(rules_df) :
     for index, row in rules_df.iterrows():
@@ -93,8 +88,8 @@ def unfold_rules(rules_df) :
             rules_df.drop(index=index,inplace=True)
             for i in rules_b :
                 rules_df = rules_df.append({"rules_a":rules_a, "rules_b":i, "confidence":confidence}, ignore_index=True)
-
     return rules_df
+
 
 def count_repeat(rules_df):
     count = 0
@@ -124,10 +119,23 @@ minimum_support = 0.07
 minimum_confidence = 0.6
 patterns = generate_frequent_items(minimum_support)
 raw_rules = generate_rules(patterns, minimum_confidence)
+
 rules_df = transform_rules_to_df(raw_rules)
-
-
-count_repeat(rules_df)
+rules_df.to_csv("rules.csv", index=False, header=False)
 
 rules_df = unfold_rules(rules_df)
+rules_df.to_csv("unfold_rules.csv", index=False, header=False)
+
 print(rules_df)
+
+rules_weight = {"confidence":0.5, "score":0.1, "play":0.1, "follow":0.1, "voice":0.1, "staff":0.1}
+def add_score(rules_weight) :
+    rules_df['score'] = 0
+
+    # 读取animation相关数据
+    animation = pd.read_json("./test_data/bilibili_crawler_animation.json")
+    animation_feature = pd.read_json("./test_data/bilibili_crawler_animation_feature.json")
+    animation_feature[["tag_list","character_voice_list","character_staff_list"]] = animation_feature[["tag_list","character_voice_list","character_staff_list"]].applymap(json.loads)
+    print(animation_feature.head())
+
+add_score(rules_weight)
