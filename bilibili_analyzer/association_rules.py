@@ -29,7 +29,7 @@ def generate_frequent_items(minimum_support):
         patterns[frozenset(sorted(i[0]))] = i[1]
     print("-------------挖掘频繁项集---------------")
     print(patterns_df)
-
+    print("--------------频繁项集------------------")
     return patterns
 
 
@@ -80,25 +80,30 @@ def transform_rules_to_df(raw_rules):
     rules_b = [i[1] for i in rules]
     confidence = [i[2] for i in rules]
     rules_df = pd.DataFrame({"rules_a": rules_a, "rules_b": rules_b, "confidence": confidence})
+    print("----------------关联规则-------------------")
     print(rules_df)
+    print("----------------关联规则-------------------")
     return rules_df
 
 
 def unfold_rules(rules_df):
     rules_df_temp = pd.DataFrame(columns=["rules_a", "rules_b", "confidence"])
     for index, row in rules_df.iterrows():
-
         if len(row["rules_b"]) > 1:
             rules_a = row["rules_a"]
             rules_b = row["rules_b"]
             confidence = row["confidence"]
             for i in rules_b:
-                rules_df_temp = rules_df_temp.append({"rules_a": rules_a, "rules_b": i, "confidence": confidence},
+                frozenset_i = set()
+                frozenset_i.add(i)
+                frozenset_i = frozenset(frozenset_i)
+                rules_df_temp = rules_df_temp.append({"rules_a": rules_a, "rules_b": frozenset_i, "confidence": confidence},
                                                      ignore_index=True)
         else:
             rules_df_temp = rules_df_temp.append(
                 {"rules_a": row["rules_a"], "rules_b": row["rules_b"], "confidence": row["confidence"]},
                 ignore_index=True)
+
     return rules_df_temp
 
 
@@ -121,7 +126,6 @@ rules_df.to_csv("rules.csv", index=False, header=False)
 rules_df = unfold_rules(rules_df)
 rules_df.to_csv("unfold_rules.csv", index=False, header=False)
 
-print(rules_df)
 
 
 def trans(raw_num):
@@ -141,38 +145,46 @@ def trans(raw_num):
 
     return int(result)
 
-
-def add_score(rules_df, rules_weight):
-    rules_df['score'] = 0
-
-    # 读取animation 和 animation_feature
-    animation = pd.read_json("./test_data/bilibili_crawler_animation.json", encoding="utf-8")
-    animation[["follow", "play"]] = animation[["follow", "play"]].applymap(trans)
-    animation_feature = pd.read_json("./test_data/bilibili_crawler_animation_feature.json",
-                                     dtype={"character_voice_list": str})
-    animation_feature[["tag_list", "character_voice_list", "character_staff_list"]] = animation_feature[
-        ["tag_list", "character_voice_list", "character_staff_list"]].applymap(json.loads)
-
-    max_follow = animation["follow"].max()
-    max_play = animation["play"].max()
-    score_list = []
-    for index, row in rules_df.iterrows():
-        score = 0
+def check_rules(rules_df, animation, animation_feature) :
+    temp_rules_df = pd.DataFrame(columns=["rules_a","rules_b","confidence"])
+    for index, row in rules_df.iterrows() :
+        #得到rules_a和rules_b
         rules_a = row["rules_a"]
         rules_a = set(rules_a)
         temp = set()
         for i in rules_a:
             i = int(i)
             temp.add(i)
-
         rules_a = temp
-
         rules_b = ''.join(row["rules_b"])
         rules_b = int(rules_b)
 
-        # 如果某条规则中的番剧不在animation里面，说明其已经失效
-        if rules_b not in list(animation["media_id"]):
+        if rules_b not in list(animation_feature["media_id"]):
             continue
+        temp_rules_a_set = set()
+        for i in rules_a:
+            if i in list(animation_feature["media_id"]):
+                temp_rules_a_set.add(i)
+        if len(temp_rules_a_set) == 0  :
+            continue
+        temp_rules_df = temp_rules_df.append({"rules_a": temp_rules_a_set, "rules_b": rules_b, "confidence": row["confidence"]}, ignore_index=True)
+    return temp_rules_df
+
+def add_score(rules_df, rules_weight, animation, animation_feature):
+
+    rules_df = check_rules(rules_df, animation, animation_feature)
+    rules_df['score'] = 0
+
+    max_follow = animation["follow"].max()
+    max_play = animation["play"].max()
+    score_list = []
+
+    for index, row in rules_df.iterrows():
+        score = 0
+        rules_a = row["rules_a"]
+
+        rules_b = row["rules_b"]
+
 
         # 计算confidence
         score += row["confidence"] * rules_weight["confidence"]
@@ -233,8 +245,16 @@ def add_score(rules_df, rules_weight):
         # 该条关联规则的评分
         score_list.append(score)
     rules_df["score"] = score_list
+    return rules_df
 
 
-rules_weight = {"confidence": 0.5, "score": 0.1, "play": 0.1, "follow": 0.1, "voice": 0.1, "staff": 0.1}
-add_score(rules_df, rules_weight)
-print(rules_df)
+#
+# # 读取animation 和 animation_feature
+# animation = pd.read_json("./test_data/bilibili_crawler_animation.json", encoding="utf-8")
+# animation[["follow", "play"]] = animation[["follow", "play"]].applymap(trans)
+# animation_feature = pd.read_json("./test_data/bilibili_crawler_animation_feature.json",dtype={"character_voice_list": str})
+# animation_feature[["tag_list", "character_voice_list", "character_staff_list"]] = animation_feature[["tag_list", "character_voice_list", "character_staff_list"]].applymap(json.loads)
+#
+# rules_weight = {"confidence": 0.5, "score": 0.1, "play": 0.1, "follow": 0.1, "voice": 0.1, "staff": 0.1}
+# add_score(rules_df, rules_weight, animation, animation_feature)
+# print(rules_df)
