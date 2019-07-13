@@ -7,10 +7,10 @@ import matplotlib.pyplot as plt
 import pylab as pl
 from collections import defaultdict
 
-filepath = './test_data/user_following_animation.json'
-data = pd.read_json(filepath, lines=True)
-data_list = list(data["value"].dropna())
-print(len(data_list))
+# filepath = './test_data/user_following_animation.json'
+# data = pd.read_json(filepath, lines=True)
+# data_list = list(data["value"].dropna())
+# print(len(data_list))
 
 
 def generate_frequent_items(minimum_support):
@@ -115,16 +115,16 @@ def count_repeat(rules_df):
     print(count)
 
 
-minimum_support = 0.07
-minimum_confidence = 0.6
-patterns = generate_frequent_items(minimum_support)
-raw_rules = generate_rules(patterns, minimum_confidence)
+# minimum_support = 0.07
+# minimum_confidence = 0.6
+# patterns = generate_frequent_items(minimum_support)
+# raw_rules = generate_rules(patterns, minimum_confidence)
 
-rules_df = transform_rules_to_df(raw_rules)
-rules_df.to_csv("rules.csv", index=False, header=False)
+# rules_df = transform_rules_to_df(raw_rules)
+# rules_df.to_csv("rules.csv", index=False, header=False)
 
-rules_df = unfold_rules(rules_df)
-rules_df.to_csv("unfold_rules.csv", index=False, header=False)
+# rules_df = unfold_rules(rules_df)
+# rules_df.to_csv("unfold_rules.csv", index=False, header=False)
 
 
 
