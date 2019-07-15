@@ -17,6 +17,7 @@ __author__ = 'Eric Naeseth <eric@naeseth.com>'
 __copyright__ = 'Copyright © 2009 Eric Naeseth'
 __license__ = 'MIT License'
 
+
 def find_frequent_itemsets(transactions, minimum_support, include_support=False):
     """
     Find frequent itemsets in the given transactions using FP-growth. This
@@ -39,14 +40,14 @@ def find_frequent_itemsets(transactions, minimum_support, include_support=False)
 
     # Remove infrequent items from the item support dictionary.
     items = dict((item, support) for item, support in items.items()
-        if support >= minimum_support)
+                 if support >= minimum_support)
 
     # Build our FP-tree. Before any transactions can be added to the tree, they
     # must be stripped of infrequent items and their surviving items must be
     # sorted in decreasing order of frequency.
     def clean_transaction(transaction):
         transaction = filter(lambda v: v in items, transaction)
-        transaction_list = list(transaction)   # 为了防止变量在其他部分调用，这里引入临时变量transaction_list
+        transaction_list = list(transaction)  # 为了防止变量在其他部分调用，这里引入临时变量transaction_list
         transaction_list.sort(key=lambda v: items[v], reverse=True)
         return transaction_list
 
@@ -66,11 +67,12 @@ def find_frequent_itemsets(transactions, minimum_support, include_support=False)
                 # itemsets within it.
                 cond_tree = conditional_tree_from_paths(tree.prefix_paths(item))
                 for s in find_with_suffix(cond_tree, found_set):
-                    yield s # pass along the good news to our caller
+                    yield s  # pass along the good news to our caller
 
     # Search for frequent itemsets, and yield the results we find.
     for itemset in find_with_suffix(master, []):
         yield itemset
+
 
 class FPTree(object):
     """
@@ -122,7 +124,7 @@ class FPTree(object):
 
         try:
             route = self._routes[point.item]
-            route[1].neighbor = point # route[1] is the tail
+            route[1].neighbor = point  # route[1] is the tail
             self._routes[point.item] = self.Route(route[0], point)
         except KeyError:
             # First node for this item; start a new route.
@@ -175,6 +177,7 @@ class FPTree(object):
             for node in nodes:
                 print('    %r' % node)
 
+
 def conditional_tree_from_paths(paths):
     """Build a conditional FP-tree from the given prefix paths."""
     tree = FPTree()
@@ -209,6 +212,7 @@ def conditional_tree_from_paths(paths):
             node._count += count
 
     return tree
+
 
 class FPNode(object):
     """A node in an FP tree."""
@@ -318,5 +322,3 @@ class FPNode(object):
         if self.root:
             return "<%s (root)>" % type(self).__name__
         return "<%s %r (%r)>" % (type(self).__name__, self.item, self.count)
-
-

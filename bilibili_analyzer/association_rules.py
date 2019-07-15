@@ -1,11 +1,9 @@
 # import pyfpgrowth
-import pandas as pd
-import numpy as np
-import json
-import fp_growth_py3 as fpg
-import matplotlib.pyplot as plt
-import pylab as pl
 from collections import defaultdict
+
+import fp_growth_py3 as fpg
+import pandas as pd
+
 
 # filepath = './test_data/user_following_animation.json'
 # data = pd.read_json(filepath, lines=True)
@@ -97,8 +95,9 @@ def unfold_rules(rules_df):
                 frozenset_i = set()
                 frozenset_i.add(i)
                 frozenset_i = frozenset(frozenset_i)
-                rules_df_temp = rules_df_temp.append({"rules_a": rules_a, "rules_b": frozenset_i, "confidence": confidence},
-                                                     ignore_index=True)
+                rules_df_temp = rules_df_temp.append(
+                    {"rules_a": rules_a, "rules_b": frozenset_i, "confidence": confidence},
+                    ignore_index=True)
         else:
             rules_df_temp = rules_df_temp.append(
                 {"rules_a": row["rules_a"], "rules_b": row["rules_b"], "confidence": row["confidence"]},
@@ -127,7 +126,6 @@ def count_repeat(rules_df):
 # rules_df.to_csv("unfold_rules.csv", index=False, header=False)
 
 
-
 def trans(raw_num):
     result = 1
     raw_num = raw_num[:-3]
@@ -145,10 +143,11 @@ def trans(raw_num):
 
     return int(result)
 
-def check_rules(rules_df, animation, animation_feature) :
-    temp_rules_df = pd.DataFrame(columns=["rules_a","rules_b","confidence"])
-    for index, row in rules_df.iterrows() :
-        #得到rules_a和rules_b
+
+def check_rules(rules_df, animation, animation_feature):
+    temp_rules_df = pd.DataFrame(columns=["rules_a", "rules_b", "confidence"])
+    for index, row in rules_df.iterrows():
+        # 得到rules_a和rules_b
         rules_a = row["rules_a"]
         rules_a = set(rules_a)
         temp = set()
@@ -165,13 +164,14 @@ def check_rules(rules_df, animation, animation_feature) :
         for i in rules_a:
             if i in list(animation_feature["media_id"]):
                 temp_rules_a_set.add(i)
-        if len(temp_rules_a_set) == 0  :
+        if len(temp_rules_a_set) == 0:
             continue
-        temp_rules_df = temp_rules_df.append({"rules_a": temp_rules_a_set, "rules_b": rules_b, "confidence": row["confidence"]}, ignore_index=True)
+        temp_rules_df = temp_rules_df.append(
+            {"rules_a": temp_rules_a_set, "rules_b": rules_b, "confidence": row["confidence"]}, ignore_index=True)
     return temp_rules_df
 
-def add_score(rules_df, rules_weight, animation, animation_feature):
 
+def add_score(rules_df, rules_weight, animation, animation_feature):
     rules_df = check_rules(rules_df, animation, animation_feature)
     rules_df['score'] = 0
 
@@ -184,7 +184,6 @@ def add_score(rules_df, rules_weight, animation, animation_feature):
         rules_a = row["rules_a"]
 
         rules_b = row["rules_b"]
-
 
         # 计算confidence
         score += row["confidence"] * rules_weight["confidence"]
@@ -246,7 +245,6 @@ def add_score(rules_df, rules_weight, animation, animation_feature):
         score_list.append(score)
     rules_df["score"] = score_list
     return rules_df
-
 
 #
 # # 读取animation 和 animation_feature
