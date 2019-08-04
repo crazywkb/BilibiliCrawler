@@ -61,3 +61,11 @@ B站本身的数据其实也存在一定的错误率，例如在声优及职员�
 
 
 ###### 项目地址：[BilibiliCrawler](https://github.com/crazywkb/BilibiliCrawler)
+
+
+
+###### References：
+
+1. [读懂B站代码：防做号，重激励，推荐机制的秘密](https://mp.weixin.qq.com/s?__biz=MzUyNDQyNTI1OQ==&mid=2247484668&idx=1&sn=50de4c62baa059c294901c41349b7b90&chksm=fa2cc5b8cd5b4cae2e4ec68e2167611241acff1539c93db25d55f4faf196d48801bc9b0a2e8b&mpshare=1&scene=1&srcid=0804lARH0MTbiSCEJo1GTBOi&sharer_sharetime=1564896087595&sharer_shareid=d5b954a726f6c8fbfe215b73d3a594ca&key=05df2f32dfb7363608bde6d8cd4c0f3f77959d143b6eeacb8188aae90bd9402e9d2f9b2fe47ea43eac45cffe4329e5ce954b5b6fe4a05615fbba2c73373ee307d5e024edbbb3c151a6aefafae7bacef3&ascene=1&uin=Mjg4OTM3MDAyOA%3D%3D&devicetype=Windows+10&version=62060833&lang=zh_CN&pass_ticket=DxkIs8i3l7ws22V%2FS1imz7siLzxxRsVdhIlm6YCFtdC1vPx3bYFBUxk%2BLEAbuKpS)
+2. [FP Tree算法原理总结](https://www.cnblogs.com/pinard/p/6307064.html)
+
