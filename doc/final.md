@@ -96,9 +96,13 @@ B站本身的数据其实也存在一定的错误率，例如在声优及职员�
 
 ### 4. 结果分析
 
+![](https://ws1.sinaimg.cn/large/0061Qobaly1g5o1fc649jj31bj0l2wmj.jpg)
+
 代码泄露
 
 与b站自身的推荐系统相比，我们考虑了画师、声优阵容
+
+![](https://ws1.sinaimg.cn/large/0061Qobaly1g5o1fccqrqj31ae0kvgtj.jpg)
 
 ### 5. 小结
 
