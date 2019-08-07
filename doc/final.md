@@ -96,6 +96,8 @@ B站本身的数据其实也存在一定的错误率，例如在声优及职员�
 
 ### 4. 结果分析
 
+首先我们利用FP-Growth算法挖掘出了所有的关联规则
+
 ![](https://ws1.sinaimg.cn/large/0061Qobaly1g5o1fc649jj31bj0l2wmj.jpg)
 
 代码泄露
