@@ -20,7 +20,7 @@ incremental==17.5.0
 ipython==7.4.0
 ipython-genutils==0.2.0
 jedi==0.13.3
-lxml==4.3.3
+lxml==4.6.2
 Mako==1.0.8
 MarkupSafe==1.1.1
 mysqlclient==1.4.2
